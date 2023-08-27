@@ -4,7 +4,8 @@ let filler1 = 255;
 let filler2 = 255;
 let filler3 = 255;
 let noiseOffset = 0;
-
+let noiseScale = 0.1;
+let segment =0;
 function setup_pScope(pScope){
   pScope.output_mode(ANIMATED_DISK);
   pScope.scale_for_screen(true);
@@ -15,12 +16,21 @@ function setup_pScope(pScope){
 
 function setup_layers(pScope){
   earthImg = loadImage('assets/earth.png');
+  mercury = loadImage('assets/mercury.png');
+  venus = loadImage('assets/venus.png');
+  saturn = loadImage('assets/saturn.png');
+  mars = loadImage('assets/mars.png');
+  uranus = loadImage('assets/uranus.png');
+  neptune = loadImage('assets/neptune.png');
   new PLayer(null, 0);  //lets us draw the whole circle background, ignoring the boundaries
   var layer1 = new PLayer(faces);
   
   layer1.mode( SWIRL(5) );
   layer1.set_boundary( 0, 1000 );
-
+  var planetLayer = new PLayer(planets);
+  planetLayer.mode(RING);  // Set to RING mode
+  planetLayer.set_boundary(0, 400);
+  var layer2 = new PLayer(faces);
   var layer2 = new PLayer(squares);
   layer2.mode( RING );
   layer2.set_boundary( 0, 400 );
@@ -65,7 +75,7 @@ function squares(x, y, animation, pScope){
   // fill(66, 135, 245)
   // arc(x,y,800,800,backgroundArcStart,backgroundArcEnd); // draws "pizza slice" in the background
   fill(255, 165, 0);
-  strokeWeight(15);
+  strokeWeight(0);
 
 
 // Define the vertices for the triangle
@@ -94,12 +104,37 @@ function sun(x, y, animation, pScope) {
   // Draw the main circle
   fill(innerColor);
   ellipse(x, y, 500, 500);
-  
-  image(earthImg, 300, 300, 100, 100);
+  //image(earthImg, 60, 60, 100, 100);
+  fill(200,0,0);
+  ellipse(100,-90,50,50);
+  fill(150,0,0);
+  ellipse(100,90,50,50);
 }
 
 
 
 
+function planets(x, y, animation, pScope) {
+  
+    image(earthImg, 500 - animation.wave() * 100, 0, 60, 65);
+
+    image(mercury, 800 - animation.wave() * 100, 0, 100, 100);
+
+    image(venus, 600 - animation.wave() * 100, 0, 100, 100);
+
+    image(mars, 800 - animation.wave() * 100, 0, 100, 100);
+ 
+    image(uranus, 600 - animation.wave() * 100, 0, 100, 100);
+ 
+    image(saturn, 800 - animation.wave() * 100, 0, 100, 100);
+  
+    image(neptune, 800 - animation.wave() * 100, 0, 100, 100);
+  
+  
+  segment++; // Increment segment
+  if (segment >= SLICE_COUNT) { // Reset segment when it reaches SLICE_COUNT
+    segment = 0;
+  }
+}
 
 
