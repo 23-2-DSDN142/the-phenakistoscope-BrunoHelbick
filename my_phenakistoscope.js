@@ -15,6 +15,7 @@ function setup_pScope(pScope){
 }
 
 function setup_layers(pScope){
+  // Load images
   earthImg = loadImage('assets/earth.png');
   mercury = loadImage('assets/mercury.png');
   venus = loadImage('assets/venus.png');
@@ -22,22 +23,28 @@ function setup_layers(pScope){
   mars = loadImage('assets/mars.png');
   uranus = loadImage('assets/uranus.png');
   neptune = loadImage('assets/neptune.png');
-  new PLayer(null, 0);  //lets us draw the whole circle background, ignoring the boundaries
-  var layer1 = new PLayer(faces);
   
-  layer1.mode( SWIRL(5) );
-  layer1.set_boundary( 0, 1000 );
-  var planetLayer = new PLayer(planets);
-  planetLayer.mode(RING);  // Set to RING mode
-  planetLayer.set_boundary(0, 400);
-  var layer2 = new PLayer(faces);
-  var layer2 = new PLayer(squares);
-  layer2.mode( RING );
-  layer2.set_boundary( 0, 400 );
-  var layer2 = new PLayer(sun);
-  layer2.mode( RING );
-  layer2.set_boundary( 0, 400 );
+  // Create a layer for the whole circle background, ignoring the boundaries
+  var backgroundLayer = new PLayer(null, 0);  
+  
+  // Create a layer for faces with swirl mode
+  var facesLayer = new PLayer(faces);
+  facesLayer.mode(SWIRL(5));
+  facesLayer.set_boundary(0, 1000);
+  // Create a layer for planets
+  var planetsLayer = new PLayer(planets);
+  
+  // Create a layer for squares with ring mode
+  var squaresLayer = new PLayer(squares);
+  squaresLayer.mode(RING);
+  squaresLayer.set_boundary(0, 400);
+  
+  // Create a layer for the sun with ring mode
+  var sunLayer = new PLayer(sun);
+  sunLayer.mode(RING);
+  sunLayer.set_boundary(0, 400);
 }
+
 
 function faces(x, y, animation, pScope){
   // strokeWeight(10);
@@ -94,6 +101,7 @@ triangle(x1, y1, x2, y2, x3, y3);
 }
 function sun(x, y, animation, pScope) {
   // Define the outer color
+  strokeWeight(1);
   let outerColor = color(255, 190, 0); // Yellow
   let innerColor = color(255, 165, 0); // Orange for depth
   
@@ -115,26 +123,31 @@ function sun(x, y, animation, pScope) {
 
 
 function planets(x, y, animation, pScope) {
+  noFill();
+  stroke(255);
+  strokeWeight(5);
+  ellipse(0,0,600 - animation.wave() * 60,600 - animation.wave() * 60);
+  strokeWeight(2);
+  ellipse(0,0,800 - animation.wave() * 30,800 - animation.wave() * 30);
+  image(mercury, 430 - animation.wave() * 10, 0, 40, 40); // Closest and smallest
   
-    image(earthImg, 500 - animation.wave() * 100, 0, 60, 65);
+  image(venus, 500 - animation.wave() * 10, 0, 50, 50); // Next closest, slightly larger
 
-    image(mercury, 800 - animation.wave() * 100, 0, 100, 100);
+  image(earthImg, 600 - animation.wave() * 10, 0, 55, 55); // Earth, similar to Venus
 
-    image(venus, 600 - animation.wave() * 100, 0, 100, 100);
+  image(mars, 660 - animation.wave() * 10, 0, 45, 45); // Mars, smaller than Earth
 
-    image(mars, 800 - animation.wave() * 100, 0, 100, 100);
- 
-    image(uranus, 600 - animation.wave() * 100, 0, 100, 100);
- 
-    image(saturn, 800 - animation.wave() * 100, 0, 100, 100);
-  
-    image(neptune, 800 - animation.wave() * 100, 0, 100, 100);
-  
-  
-  segment++; // Increment segment
-  if (segment >= SLICE_COUNT) { // Reset segment when it reaches SLICE_COUNT
-    segment = 0;
-  }
+  image(saturn, 720 - animation.wave() * 10, 0, 90, 90); // Saturn, larger but not the largest
+
+  image(uranus, 800 - animation.wave() * 10, 0, 80, 80); // Uranus, smaller than Saturn
+
+  image(neptune, 900 - animation.wave() * 10, 0, 85, 85); // Neptune, similar to Uranus but farther
+
+
+segment++; // Increment segment
+if (segment >= SLICE_COUNT) { // Reset segment when it reaches SLICE_COUNT
+  segment = 0;
+}
 }
 
 
