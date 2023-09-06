@@ -6,6 +6,8 @@ let filler3 = 255;
 let noiseOffset = 0;
 let noiseScale = 0.1;
 let segment =0;
+let counter= 0;
+let counterDirection = 1;
 function setup_pScope(pScope){
   pScope.output_mode(ANIMATED_DISK);
   pScope.scale_for_screen(true);
@@ -33,7 +35,9 @@ function setup_layers(pScope){
   facesLayer.set_boundary(0, 1000);
   // Create a layer for planets
   var planetsLayer = new PLayer(planets);
-  
+  var sphereLayer = new PLayer(spheres);
+  sphereLayer.mode(RING);
+  sphereLayer.set_boundary(0, 5);
   // Create a layer for squares with ring mode
   var squaresLayer = new PLayer(squares);
   squaresLayer.mode(RING);
@@ -43,6 +47,7 @@ function setup_layers(pScope){
   var sunLayer = new PLayer(sun);
   sunLayer.mode(RING);
   sunLayer.set_boundary(0, 400);
+  
 }
 
 
@@ -150,4 +155,18 @@ if (segment >= SLICE_COUNT) { // Reset segment when it reaches SLICE_COUNT
 }
 }
 
+function spheres(x, y, animation, pScope) {
+  if (segment === 0) {
+  fill(255, 255, 255, 0);
+  strokeWeight(5);
+  stroke(230);
+  
+  // Draw ellipses based on counter
+  ellipse(0,0,300+40*counter,300+70*counter);
 
+  counter += 0.05 * counterDirection; // Increment or decrement counter
+  
+  if(counter >= 10 || counter <= 0){ // Reverse direction at max and min
+    counterDirection *= -1;
+  }}
+}
