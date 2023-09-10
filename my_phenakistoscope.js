@@ -6,10 +6,10 @@ let filler3 = 255;
 let noiseOffset = 0;
 let noiseScale = 0.1;
 let segment =0;
-let counter= 0;
+let counter= 12;
 let counterDirection = 1;
 function setup_pScope(pScope){
-  pScope.output_mode(ANIMATED_DISK);
+  pScope.output_mode(OUTPUT_GIF(1000));
   pScope.scale_for_screen(true);
   pScope.draw_layer_boundaries(true);
   pScope.set_direction(CCW);
@@ -27,7 +27,7 @@ function setup_layers(pScope){
   neptune = loadImage('assets/neptune.png');
   
   // Create a layer for the whole circle background, ignoring the boundaries
-  var backgroundLayer = new PLayer(null, 0);  
+  var backgroundLayer = new PLayer(null, 15);  
   
   // Create a layer for faces with swirl mode
   var facesLayer = new PLayer(faces);
@@ -46,7 +46,7 @@ function setup_layers(pScope){
   // Create a layer for the sun with ring mode
   var sunLayer = new PLayer(sun);
   sunLayer.mode(RING);
-  sunLayer.set_boundary(0, 400);
+  sunLayer.set_boundary(0, 400);;
   
 }
 
@@ -55,6 +55,7 @@ function faces(x, y, animation, pScope){
   // strokeWeight(10);
   // line(0,0,100,100);
   fill(255, 215, 0);
+
   // ellipse(0,0,700,700); // draw head
   // fill(30);
   // ellipse(-10,-10,10,10); //draw eye
@@ -65,6 +66,7 @@ function faces(x, y, animation, pScope){
     for(let z =0;i<20;i++){
     let g = random(-5,2);
     if(g>1){textSize(100);
+      fill(255-i*6, 215-i*6, i*6);
       ellipse( i*30, i*30,20,20);
     }}}
     
@@ -106,7 +108,7 @@ triangle(x1, y1, x2, y2, x3, y3);
 }
 function sun(x, y, animation, pScope) {
   // Define the outer color
-  strokeWeight(1);
+  
   let outerColor = color(255, 190, 0); // Yellow
   let innerColor = color(255, 165, 0); // Orange for depth
   
@@ -149,14 +151,14 @@ function planets(x, y, animation, pScope) {
   image(neptune, 900 - animation.wave() * 10, 0, 85, 85); // Neptune, similar to Uranus but farther
 
 
-segment++; // Increment segment
+this.segment++; // Increment segment
 if (segment >= SLICE_COUNT) { // Reset segment when it reaches SLICE_COUNT
   segment = 0;
 }
 }
 
 function spheres(x, y, animation, pScope) {
-  if (segment === 0) {
+  if (segment == 0) {
   fill(255, 255, 255, 0);
   strokeWeight(5);
   stroke(230);
@@ -164,9 +166,18 @@ function spheres(x, y, animation, pScope) {
   // Draw ellipses based on counter
   ellipse(0,0,300+40*counter,300+70*counter);
 
-  counter += 0.05 * counterDirection; // Increment or decrement counter
+  counter += 0.09 * counterDirection; // Increment or decrement counter
   
-  if(counter >= 10 || counter <= 0){ // Reverse direction at max and min
+  if(counter >= 11 || counter <= 3){ // Reverse direction at max and min
     counterDirection *= -1;
   }}
+}
+function meteorite(x, y, animation, pScope){
+  fill(180);
+  ellipse(250,250,50,50);
+  fill(180,80,78);
+  ellipse(250,250,80,50);
+
+
+
 }
