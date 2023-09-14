@@ -9,7 +9,7 @@ let segment =0;
 let counter= 12;
 let counterDirection = 1;
 function setup_pScope(pScope){
-  pScope.output_mode(OUTPUT_GIF(1000));
+  pScope.output_mode(ANIMATED_DISK);
   pScope.scale_for_screen(true);
   pScope.draw_layer_boundaries(true);
   pScope.set_direction(CCW);
@@ -28,7 +28,9 @@ function setup_layers(pScope){
   
   // Create a layer for the whole circle background, ignoring the boundaries
   var backgroundLayer = new PLayer(null, 15);  
-  
+  var meteoritelayer = new PLayer(meteorite);
+  meteoritelayer.mode(SWIRL(1));
+  meteoritelayer.set_boundary(0, 400 );
   // Create a layer for faces with swirl mode
   var facesLayer = new PLayer(faces);
   facesLayer.mode(SWIRL(5));
@@ -47,6 +49,7 @@ function setup_layers(pScope){
   var sunLayer = new PLayer(sun);
   sunLayer.mode(RING);
   sunLayer.set_boundary(0, 400);;
+  
   
 }
 
@@ -151,7 +154,7 @@ function planets(x, y, animation, pScope) {
   image(neptune, 900 - animation.wave() * 10, 0, 85, 85); // Neptune, similar to Uranus but farther
 
 
-this.segment++; // Increment segment
+segment++; // Increment segment
 if (segment >= SLICE_COUNT) { // Reset segment when it reaches SLICE_COUNT
   segment = 0;
 }
@@ -173,11 +176,12 @@ function spheres(x, y, animation, pScope) {
   }}
 }
 function meteorite(x, y, animation, pScope){
-  fill(180);
-  ellipse(250,250,50,50);
-  fill(180,80,78);
-  ellipse(250,250,80,50);
-
-
-
+  fill(255, 255, 255, 0);
+  stroke(255);
+  strokeWeight(3);
+  for(let i =0;i<2;i++){
+    for(let z =0;z<4;z++){
+      ellipse( 900+i*30, 800+z*30,20+z*10,20+i*10);
+    }
+  }
 }
